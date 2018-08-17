@@ -1,0 +1,19 @@
+{
+  "name": "@oada/fields-module",
+  "version": "1.2.0",
+  "description": "cerebral module for implementing fields from an oada-compliant server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir ./ --presets=env",
+    "prepare": "npm run build",
+    "build-watch": "babel --watch src --out-dir ./ --presets=env"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@oada/cerebral-module": "^0.9.0",
+    "Promise": "^1.0.5",
+    "cerebral": "^4.2.2"
+  }
+}
