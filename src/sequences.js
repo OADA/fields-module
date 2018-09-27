@@ -2,10 +2,12 @@ import { sequence } from 'cerebral'
 import { set, when } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 import Promise from 'bluebird';
-import oada from '@oada/cerebral-module/sequences'
+import * as oada from '@oada/cerebral-module/sequences'
 
 //TODO: create transform from field to notes.fields entry
 //TODO: need a string that says "loading fields"
+//
+let signals = [];
 
 let tree = {
   'bookmarks': {
@@ -16,7 +18,7 @@ let tree = {
       '_rev': '0-0',
       'fields-index': {
         '*': {
-          '_type': "application/vnd.oada.fields.1+json",
+          '_type': "application/vnd.oada.field.1+json",
           '_rev': '0-0',
           'fields-index': {
             '*': {
@@ -30,11 +32,15 @@ let tree = {
 }
 
 export const fetch = sequence('fields.fetch', [
-  ({state, props}) => ({
-		tree,
-    path: '/bookmarks/fields',
-    watch: { signals: ['notes.getFieldNotes']},
-	}),
+  ({state, props}) => {
+    let signals = (props.signals ? props.signals : [])
+    let watch = {signals: [...signals]};
+    return {
+      tree,
+      path: '/bookmarks/fields',
+      watch,
+    }
+  },
   oada.get,
 	when(state`oada.${props`connection_id`}.bookmarks.fields`), {
 		true: sequence('fetchFieldsSuccess', [
@@ -42,6 +48,16 @@ export const fetch = sequence('fields.fetch', [
 		]),
 		false: sequence('fetchFieldsFailed', []),
   },
+])
+
+export const setFetchWatch = sequence('fields.updateFetchWatch', [
+  ({props}) => {
+    signals = props.signals;
+  }
+])
+
+export const getFetchWatch = sequence('fields.updateFetchWatch', [
+  ({props}) => ({signals})
 ])
 
 export const init = sequence('fields.init', [
@@ -56,21 +72,29 @@ export const init = sequence('fields.init', [
 export const selectField = sequence('fields.selectField', []);
 
 export function mapOadaToRecords({props, state}) {
-  state.unset('fields.records')
-	let fields = state.get(`oada.${props.connection_id}.bookmarks.fields`)
-	if (fields) {
-		return Promise.map(Object.keys(fields['fields-index'] || {}), (fieldGroup) => {
-		  return Promise.map(Object.keys(fields['fields-index'][fieldGroup]['fields-index'] || {}), (field) => {
-			  return state.set(`fields.records.${field}`, { 
-			  	boundary: fields['fields-index'][fieldGroup]['fields-index'][field].boundary,
-			  	id: field,
-			  });
+  var curFields = state.get('fields.records')
+  return Promise.map(Object.keys(curFields || {}), (field) => {
+    return state.unset(`fields.records.${field}`)
+  }).then(() => {
+    let fields = state.get(`oada.${props.connection_id}.bookmarks.fields`)
+    if (fields) {
+      return Promise.map(Object.keys(fields['fields-index'] || {}), (fieldGroup) => {
+        return Promise.map(Object.keys(fields['fields-index'][fieldGroup]['fields-index'] || {}), (field) => {
+          return state.set(`fields.records.${field}`, { 
+            boundary: fields['fields-index'][fieldGroup]['fields-index'][field].boundary,
+            id: field,
+            name: fields['fields-index'][fieldGroup]['fields-index'][field].name,
+            farm: {
+              id: fieldGroup,
+              name: fields['fields-index'][fieldGroup].name
+            }
+          });
+        })
       })
-		}).then(() => {
-			state.set('map.layers.Fields', {visible: true});
-			return
-		})
-  }
+    } else return
+  }).then(() => {
+    return
+  })
 }
 
 export const deleteField = sequence('fields.deleteField', [
