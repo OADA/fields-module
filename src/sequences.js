@@ -2,7 +2,7 @@ import { sequence } from "cerebral";
 import { set, when } from "cerebral/operators";
 import { state, props } from "cerebral/tags";
 import Promise from "bluebird";
-import * as oada from "@oada/cerebral-module/sequences";
+import oada from "@oada/cerebral-module/sequences";
 
 //TODO: create transform from field to notes.fields entry
 //TODO: need a string that says "loading fields"

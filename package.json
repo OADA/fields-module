@@ -1,6 +1,6 @@
 {
   "name": "@oada/fields-module",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "cerebral module for implementing fields from an oada-compliant server",
   "main": "index.js",
   "scripts": {
