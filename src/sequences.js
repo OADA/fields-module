@@ -187,6 +187,49 @@ export function mapOadaToFields({ props, state }) {
     });
 }
 
+/**
+ * Maps farms records (utilized to validate the existence of a farm)
+ * @param props
+ * @param state
+ * @returns {*}
+ */
+export function mapOadaToFarms({ props, state }) {
+  let connection_id = state.get("fields.connection_id");
+  let curFarms = state.get("fields.farms");
+
+  //console.log(" ---- map oada to farms ---- ");
+
+  return Promise.map(Object.keys(curFarms || {}), farm => {
+    return state.unset(`fields.farms.${farm}`);
+  })
+    .then(() => {
+      let fields = state.get(`oada.${connection_id}.bookmarks.fields`);
+      if (fields) {
+        return Promise.map(Object.keys(fields["fields-index"] || {}), farm => {
+          if (
+            fields["fields-index"][farm] &&
+            fields["fields-index"][farm].name
+          ) {
+            let farm_object = fields["fields-index"][farm];
+            let record = {
+              id: farm,
+              name: farm_object.name
+            };
+            return state.set(
+              `fields.farms.${fields["fields-index"][farm].name}`,
+              record
+            );
+          } else {
+            return;
+          }
+        });
+      } else return;
+    })
+    .then(() => {
+      return;
+    });
+} //mapOadaToFarms
+
 export const deleteField = sequence("fields.deleteField", [
   ({ props, state }) => ({
     connection_id: state.get("fields.connection_id"),
