@@ -1,6 +1,6 @@
 {
   "name": "@oada/fields-module",
-  "version": "2.0.9",
+  "version": "2.1.1",
   "description": "cerebral module for implementing fields from an oada-compliant server",
   "main": "index.js",
   "scripts": {
@@ -12,11 +12,20 @@
   "author": "OADA",
   "license": "Apache-2.0",
   "dependencies": {
+    "@mapbox/geojson-area": "^0.2.2",
     "@oada/cerebral-module": "^2.1.4",
+    "@turf/bbox": "^6.0.1",
+    "@turf/centroid": "^6.0.2",
     "Promise": "^1.0.5",
     "cerebral": "^4.2.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "webpack-cli": "^3.2.3"
   }
 }
