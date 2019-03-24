@@ -1,6 +1,7 @@
 import { sequence } from "cerebral";
 import { set, when } from "cerebral/operators";
 import { state, props } from "cerebral/tags";
+import uuid from "uuid";
 import Promise from "bluebird";
 import oada from "@oada/cerebral-module/sequences";
 import geojson_area from "@mapbox/geojson-area";
@@ -323,7 +324,6 @@ export function fieldTextChanged({ props, state }) {
   state.set("fields.new_field.field.suggestionsOpen", true);
   validateNewFieldButton({ props, state });
 }
-
 
 /**
  * Generates a timestamp in the format 'YYYY-MM-DD'
