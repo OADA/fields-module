@@ -1,16 +1,23 @@
 {
   "name": "@oada/fields-module",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "description": "cerebral module for implementing fields from an oada-compliant server",
-  "main": "index.js",
+  "main": "./cerebral/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --out-dir ./ --presets=env",
+    "build": "babel src --out-dir ./cerebral --presets=env",
     "prepare": "npm run build",
-    "build-watch": "babel --watch src --out-dir ./ --presets=env"
+    "build-watch": "babel --watch src --out-dir ./cerebral --presets=env",
+    "build-watch-component": "webpack"
   },
   "author": "OADA",
   "license": "Apache-2.0",
+  "peerDependencies": {
+    "react": "^16.2.0",
+    "@material-ui/core": "^1.1.0",
+    "material-ui": "^1.0.0-beta.34",
+    "uuid": "^3.2.1"
+  },
   "dependencies": {
     "@mapbox/geojson-area": "^0.2.2",
     "@oada/cerebral-module": "^2.1.4",
@@ -18,6 +25,7 @@
     "@turf/centroid": "^6.0.2",
     "Promise": "^1.0.5",
     "cerebral": "^4.2.2",
+    "webpack": "^4.29.3",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
