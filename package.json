@@ -25,7 +25,7 @@
     "@turf/centroid": "^6.0.2",
     "Promise": "^1.0.5",
     "cerebral": "^4.2.2",
-    "webpack": "^4.29.3",
+    "webpack": "^5.0.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
