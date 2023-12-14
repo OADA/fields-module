@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@mapbox/geojson-area": "^0.2.2",
-    "@oada/cerebral-module": "^2.1.4",
+    "@oada/cerebral-module": "^4.0.0",
     "@turf/bbox": "^6.0.1",
     "@turf/centroid": "^6.0.2",
     "Promise": "^1.0.5",
